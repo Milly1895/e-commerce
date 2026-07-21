@@ -7,7 +7,7 @@ import {effect} from '@angular/core';
 import {UpperCasePipe} from '@angular/common';
 @Component({
   selector: 'app-lista-produtos',
-  imports: [Produto, PrecoFormatadoPipe, UpperCasePipe],
+  imports: [Produto, PrecoFormatadoPipe, UpperCasePipe] ,
   templateUrl: './lista-produtos.html',
   styleUrl: './lista-produtos.css',
 })
