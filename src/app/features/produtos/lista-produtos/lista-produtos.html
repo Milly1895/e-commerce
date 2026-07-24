@@ -25,21 +25,27 @@ Produto selecionado:
 <h3>Valor total: {{valorTotal() | precoFormatado}}</h3>
 <p><button (click)="substituirProdutos()">Substituir Produtos</button></p> -->
 <h2>Produtos:</h2>
+<!-- Estado 1: Loading -->
+@if(carregando()) {
+    <p>Carregando Produtos...</p>
+}
+<!-- Estado 2: Erro -->
+@if (erro()){
+     <p style="color: red;">{{ erro() }}</p>
 
-@if (carregando()) {
-    <p>Carregando produtos...</p>
+     <button (click)="carregarProdutos()">Tentar novamente</button>
 }
-@if (!carregando()){
-    @for (item of produtos();track item.nome){
-    <app-produto 
-    [nome]="item.nome"
-    [preco]="item.preco"
-    (produtoSelecionado)="exibirProduto($event)"
+     <!-- Estado 3: Sucesso -->
+      @if(!carregando() && ! erro) {
+        <p>Total de Produtos: {{ totalProdutos() }}</p>
+        <hr>
+@for(item of produtos(); track $index){
+    <app-produto
+    [nome] = "item.nome"
+    [preco] = "item.preco"
     ></app-produto>
-    <button (click)="adicionarAoCarrinho(item)">Adicionar ao Carrinho</button>
-  }
+ }
 }
-<hr>
 <h2>Carrinho</h2>
 @for(item of carrinho(); track $index){
     <p>{{ item.nome | uppercase }} - {{item.preco | precoFormatado}}</p>
