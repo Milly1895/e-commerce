@@ -30,7 +30,8 @@ export class ListaProdutos {
 
     //?============= MÉTODO HTTP (API) foi modificado para (ProdutosService)
     carregarProdutos(){
-      this.carregando.set(true);
+      this.carregando.set(true);//!Ativa Loading
+      this.erro.set(null); //? limpa o erro anterior
 
       this.produtosService.buscarProdutos().subscribe({
             next: (dados) => {
@@ -40,6 +41,7 @@ export class ListaProdutos {
             },
             error:(erro) => {
               console.error('Erro ao carregar os produtos:,',erro);
+              this.erro.set('Erro ao carregar Produtos.Verifique sua conexão e tente novamente!');
               this.carregando.set(false);
             },
       });
@@ -90,9 +92,11 @@ export class ListaProdutos {
   });
  }
  produtoSelecionado = signal <string | null> (null); 
-
+ 
  carrinho = signal <{ nome : string; preco: number }[]>([]);
 
+ erro = signal < string | null > (null);
+ 
  adicionarAoCarrinho(produto: { nome: string; preco: number }){
     this.carrinho.update(listaAtual =>
       [...listaAtual, produto]);}
