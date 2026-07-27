@@ -36,7 +36,7 @@ Produto selecionado:
      <button (click)="carregarProdutos()">Tentar novamente</button>
 }
      <!-- Estado 3: Sucesso -->
-      @if(!carregando() && ! erro) {
+      @if(!carregando() && ! erro()){
         <p>Total de Produtos: {{ totalProdutos() }}</p>
         <hr>
 @for(item of produtos(); track $index){
