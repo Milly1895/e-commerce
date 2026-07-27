@@ -16,7 +16,7 @@ export class produtoService {
     private http = inject(HttpClient);
 
 
-    private API = 'https://fakestoreapi.com/productss';
+    private API = 'https://fakestoreapi.com/products';
     buscarProdutos(){
         return this.http.get < ProdutoApi []>( this.API);
     }
