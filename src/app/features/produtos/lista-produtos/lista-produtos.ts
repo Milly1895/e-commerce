@@ -40,7 +40,7 @@ export class ListaProdutos {
               this.carregando.set(false);
             },
             error:(erro) => {
-              console.error('Erro ao carregar os produtos:,',erro);
+              console.error('Erro ao carregar os Produtos:,',erro);
               this.erro.set('Erro ao carregar Produtos.Verifique sua conexão e tente novamente!');
               this.carregando.set(false);
             },
@@ -48,7 +48,7 @@ export class ListaProdutos {
     } 
 
   exibirProduto(nome: string) {
-   console.log('Produto selecionado: ', nome);
+   //console.log('Produto selecionado: ', nome);
    this.produtoSelecionado.set(nome);
   }
   adicionarProduto() {
