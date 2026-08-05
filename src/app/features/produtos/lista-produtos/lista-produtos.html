@@ -39,6 +39,7 @@ Produto selecionado:
       @if(!carregando() && ! erro()){
         <p>Total de Produtos: {{ totalProdutos() }}</p>
         <hr>
+<section class="grid-produtos">
 @for(item of produtos(); track $index){
     <app-produto
     [nome] = "item.nome"
@@ -49,6 +50,7 @@ Produto selecionado:
     </app-produto>
     <!-- <button (click)="adicionarAoCarrinho(item)">adicionarAoCarrinho</button> -->
  }
+ </section>
 }
 <h2>Carrinho</h2>
 @for(item of carrinho(); track $index){
