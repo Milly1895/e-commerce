@@ -12,5 +12,5 @@ import { UpperCasePipe } from '@angular/common';
   styleUrl: './header.css',
 })
 export class Header {
-  nomeLoja = 'Pewiccon'
+  nomeLoja = 'JS.silva'
 }
