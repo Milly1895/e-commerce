@@ -5,10 +5,11 @@ import { computed } from '@angular/core';
 import { PrecoFormatadoPipe} from '../../../shared/pipes/preco-formatado-pipe';
 import {effect} from '@angular/core';
 import {UpperCasePipe} from '@angular/common';
-import { produtoService } from '../produto/produtos.service';
+import { produtoService } from '../../../core/services/produtos.service';
 import { inject } from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
+import { CarrinhoService } from '../../../core/services/carrinho.service';
 @Component({
   selector: 'app-lista-produtos',
   imports: [Produto, PrecoFormatadoPipe, UpperCasePipe, MatButtonModule, MatCardModule] ,
@@ -50,7 +51,7 @@ export class ListaProdutos {
     } 
 
   exibirProduto(nome: string) {
-   //console.log('Produto selecionado: ', nome);
+   console.log('Produto selecionado: ', nome);
    this.produtoSelecionado.set(nome);
   }
   adicionarProduto() {
@@ -73,6 +74,7 @@ export class ListaProdutos {
             { nome: 'Headset', preco: 25},
     ]);
   }
+  
 
   //! injetar httpClient dentro de constructor,restruturar constructor
   constructor() {
@@ -93,23 +95,18 @@ export class ListaProdutos {
    } 
   });
  }
- produtoSelecionado = signal <string | null> (null); 
- 
- carrinho = signal <{ nome : string; preco: number }[]>([]);
-
- erro = signal < string | null > (null);
+ produtoSelecionado = signal<string |null> (null);
+ carrinho = signal <{nome: string; preco:number}[]>([]);
+ erro =signal <string | null > (null);
  
  adicionarAoCarrinho(produto: { nome: string; preco: number }){
-    this.carrinho.update(listaAtual =>
-      [...listaAtual, produto]);}
-
+    this.carrinhoService.adicionar(produto);
+ }
 //?========== INJECT =========
 private produtosService = inject (produtoService);
-    
-    quantidadeCarrinho = computed(() => this.carrinho().length);
-    
-    totalCarrinho = computed(() => {
-      return this.carrinho().reduce((total, item) =>
-        total + item.preco, 0);
- });    
+public carrinhoService = inject (CarrinhoService);
+
+quantidadeCarrinho = this.carrinhoService.quantidadesItens;
+totalCarrinho = this.carrinhoService.totalItens;
 }
+
