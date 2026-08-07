@@ -44,7 +44,7 @@ export const routes:Routes = [
             import('./features/carrinho/carrinho/carrinho').then((m)=>m.Carrinho),
     },
     {
-        path:'chekout',
+        path:'checkout',
         loadComponent:()=>
             import('./features/checkout/checkout/checkout').then((m)=> m.Checkout),
     },
