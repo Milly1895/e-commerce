@@ -37,6 +37,11 @@ export class Login {
       return;
     } 
     
+    if(this.authService.admin()){
+      this.router.navigateByUrl('/admin');
+      return;
+    }
+
     this.router.navigateByUrl('/produtos');
   }
 }
