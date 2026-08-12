@@ -26,6 +26,7 @@
 //!codigo Final lazyLoading e loadComponent
 import { Routes } from "@angular/router";
 import { authGuard } from "./core/auth.guard";
+import { adminGuard } from "./core/admin.guard";
 export const routes:Routes = [
     {
         path:'',
@@ -53,6 +54,12 @@ export const routes:Routes = [
         loadComponent:()=>
             import('./features/login/login/login').then((m)=>m.Login),
     },
+    {
+        path:'admin',
+        loadComponent:()=>
+            import('./features/admin/admin/admin').then((m) => m.Admin),
+            
+        },
     {
         path:'**',
         redirectTo:'',
