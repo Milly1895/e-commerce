@@ -7,6 +7,7 @@ import { UpperCasePipe } from '@angular/common';
 import { inject } from '@angular/core';
 import { CarrinhoService } from '../../../core/services/carrinho.service';
 import { AuthService } from '../../../core/services/auth.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-header',
   imports: [MatButtonModule, MatToolbarModule,MatIconModule,RouterLink, UpperCasePipe],
@@ -22,7 +23,10 @@ export class Header {
   usuarioLogado = this.authService.usuarioLogado;
   usuarioAtual = this.authService.usuarioAtual;
 
+  private router = inject(Router);
+
   sair(){
     this.authService.logout();
+    this.router.navigateByUrl('/login');
   }
 }
