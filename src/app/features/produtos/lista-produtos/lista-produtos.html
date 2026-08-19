@@ -50,11 +50,6 @@ Produto selecionado:
     </app-produto>
     <!-- <button (click)="adicionarAoCarrinho(item)">adicionarAoCarrinho</button> -->
  }
- </section>
-}
-<h2>Carrinho</h2>
-@for(item of carrinhoService.itens(); track $index){
-    <p>{{ item.nome | uppercase }} - {{item.preco | precoFormatado}}</p>
-}
- <p><strong>Itens no carrinho:</strong> {{ carrinhoService.quantidadesItens()}}</p>
- <p><strong>Total do carrinho:</strong> {{ carrinhoService.totalItens() | precoFormatado}}</p>
+</section>
+      }
+<hr>
