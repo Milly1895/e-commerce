@@ -1,6 +1,6 @@
 import { Component,inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../../core/services/auth.service';
+import { AuthFacade } from '../../../core/facades/auth.facade';
 import { Route } from '@angular/router';
 import { MatAnchor } from "@angular/material/button";
 
@@ -11,11 +11,11 @@ import { MatAnchor } from "@angular/material/button";
   styleUrl: './acesso-negado.css',
 })
 export class AcessoNegado {
-  private authService =inject(AuthService); //! Teste em Produção
+  private authFacade =inject(AuthFacade); //! Teste em Produção
   private router = inject(Router);
 
   sair(){
- this.authService.logout();
+ this.authFacade.sair();
  this.router.navigateByUrl('/login');
  return;
   }
