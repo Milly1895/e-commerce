@@ -6,16 +6,22 @@ import { FormControl } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { AbstractControl } from '@angular/forms';
 import { ValidationErrors } from '@angular/forms';
-import { CarrinhoService } from '../../../core/services/carrinho.service';
+import { CarrinhoFacade } from '../../../core/facades/carrinho.facade';
 import { signal } from '@angular/core';
+import { Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
+import { AuthFacade } from '../../../core/facades/auth.facade';
+import { PrecoFormatadoPipe } from '../../../shared/pipes/preco-formatado-pipe';
 @Component({
   selector: 'app-checkout',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink,PrecoFormatadoPipe],
   templateUrl: './checkout.html',
   styleUrl: './checkout.css',
 })
 export class Checkout { 
-  carrinhoService = inject(CarrinhoService);
+  carrinhoFacade= inject(CarrinhoFacade);
+  router = inject(Router);
+  authFacade = inject(AuthFacade);
 
   formulario =new FormGroup ({
     nome: new FormControl('',[Validators.required,Validators.minLength(3), nomeSemNumeros]),
@@ -25,7 +31,7 @@ export class Checkout {
 
   finalizar () {
     this.compraFinalizada.set(false);
-    if(this.carrinhoService.carrinhoVazio()){
+    if(this.carrinhoFacade.carrinhoVazio()){
       console.log('Não é possivel finalizar a compra com o carrinho vazio!');
       return;
     }
@@ -36,20 +42,25 @@ export class Checkout {
     }
 
     const dados = this.formulario.value;
-    const itens = this.carrinhoService.itens();
-    const total = this.carrinhoService.totalItens();
+    const itens = this.carrinhoFacade.itensCarrinho();
+    const total = this.carrinhoFacade.totalCarrinho();
 
     console.log('Compra finalizada com sucesso!');
     console.log('Dados do formulario', dados);
     console.log('Itens do carrinho', itens);
     console.log('Total da compra:', total);
 
-   this.carrinhoService.limpar();
+   this.carrinhoFacade.limparCarrinho();
    this.formulario.reset();
    this.compraFinalizada.set(true);
   }
 
 compraFinalizada = signal(false)
+
+sair(){
+  this.authFacade.sair();
+  this.router.navigateByUrl('/login');
+}
 
 }
 function nomeSemNumeros(control: AbstractControl): ValidationErrors | null {
