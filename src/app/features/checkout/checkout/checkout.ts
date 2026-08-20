@@ -12,13 +12,27 @@ import { Router } from '@angular/router';
 import { RouterLink } from '@angular/router';
 import { AuthFacade } from '../../../core/facades/auth.facade';
 import { PrecoFormatadoPipe } from '../../../shared/pipes/preco-formatado-pipe';
+import { ItemCarrinho } from '../../../core/models/item-carrinho';
+
+type PedidoFinalizado ={
+  codigo: number;
+  cliente: string;
+  quantidadeItens: number;
+  total: number;
+  itens: ItemCarrinho[];
+}
+
 @Component({
   selector: 'app-checkout',
   imports: [ReactiveFormsModule, RouterLink,PrecoFormatadoPipe],
   templateUrl: './checkout.html',
   styleUrl: './checkout.css',
 })
+
 export class Checkout { 
+  pedidoFinalizado = signal<PedidoFinalizado | null > (null)
+  //compraFinalizada = signal(false);
+
   carrinhoFacade= inject(CarrinhoFacade);
   router = inject(Router);
   authFacade = inject(AuthFacade);
@@ -30,7 +44,9 @@ export class Checkout {
   });
 
   finalizar () {
-    this.compraFinalizada.set(false);
+    this.pedidoFinalizado.set(null);
+    //this.compraFinalizada.set(false);
+
     if(this.carrinhoFacade.carrinhoVazio()){
       console.log('Não é possivel finalizar a compra com o carrinho vazio!');
       return;
@@ -45,18 +61,25 @@ export class Checkout {
     const itens = this.carrinhoFacade.itensCarrinho();
     const total = this.carrinhoFacade.totalCarrinho();
 
+    const pedido: PedidoFinalizado = {
+      codigo: Date.now(),
+      cliente: dados.nome ?? '',
+      quantidadeItens: itens.length,
+      total,
+      itens,
+    }
+
     console.log('Compra finalizada com sucesso!');
     console.log('Dados do formulario', dados);
-    console.log('Itens do carrinho', itens);
-    console.log('Total da compra:', total);
+    console.log('Dados do Pedidos: ', pedido);
+    
 
    this.carrinhoFacade.limparCarrinho();
    this.formulario.reset();
-   this.compraFinalizada.set(true);
+   //this.compraFinalizada.set(true);
+   this.pedidoFinalizado.set(pedido);
   }
-
-compraFinalizada = signal(false)
-
+  
 sair(){
   this.authFacade.sair();
   this.router.navigateByUrl('/login');
