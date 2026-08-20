@@ -8,7 +8,7 @@ import { inject } from '@angular/core';
 import { AuthFacade } from '../../../core/facades/auth.facade';
 import { CarrinhoFacade } from '../../../core/facades/carrinho.facade';
 import { Router } from '@angular/router';
-import { NomeLoja } from '../../../core/models/nome-loja';
+
 @Component({
   selector: 'app-header',
   imports: [MatButtonModule, MatToolbarModule,MatIconModule,RouterLink, UpperCasePipe],
@@ -16,8 +16,7 @@ import { NomeLoja } from '../../../core/models/nome-loja';
   styleUrl: './header.css',
 })
 export class Header {
-
-private nomeLoja = inject(NomeLoja);
+nomeLoja = 'JS silva';
 
   private carrinhoService = inject(CarrinhoFacade);
   private authFacade = inject(AuthFacade);
