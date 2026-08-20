@@ -11,10 +11,13 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import { CarrinhoFacade } from '../../../core/facades/carrinho.facade';
 import { ItemCarrinho } from '../../../core/models/item-carrinho';
+import { ProdutoLoja } from '../../../core/models/produto-loja';
+import { Header } from '../../../shared/layout/header/header';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-lista-produtos',
-  imports: [Produto, PrecoFormatadoPipe, UpperCasePipe, MatButtonModule, MatCardModule] ,
+  imports: [Produto, PrecoFormatadoPipe, UpperCasePipe, MatButtonModule, MatCardModule, RouterLink] ,
   templateUrl: './lista-produtos.html',
   styleUrl: './lista-produtos.css',
 })
@@ -22,8 +25,7 @@ export class ListaProdutos {
 
   //!remover a lista de produtos,dados carregados via API fakestoreapi
   
-  produtos = signal <{
-    nome: string ; preco : number }[]>([]);
+  produtos = signal <ProdutoLoja[]>([]);
 
     //? criar estado de carregamento,
     // ** true:requisição em andamento,exibir indicador no templete
@@ -67,6 +69,8 @@ export class ListaProdutos {
   valorTotal = computed(() => { return this.produtos().reduce
       ((total, item) => total + item.preco, 0)});
 
+      valorTotalFormado = computed(() => this.valorTotal().toFixed(2));
+
     substituirProdutos() {
       this.produtos.set([
         { nome: 'Teclado', preco: 40},
@@ -84,16 +88,10 @@ export class ListaProdutos {
     //! Carregar a API
     this.carregarProdutos();
 
-    //! effects continuam iguais
-   effect(() => {
-      console.log('Lista de Produtos Alterados: ', this.produtos());
- });
-   effect(() => { 
-      console.log('Valor total atualizado: ', this.valorTotal());
- });
+    
    effect(() => {
     if (typeof document !== 'undefined'){
-      document.title = `Produtos (${this.totalProdutos()}) Minha Loja`;
+      document.title = `Produtos (${this.totalProdutos()}) MinhaLoja`;
    } 
   });
  }
@@ -107,6 +105,7 @@ export class ListaProdutos {
 //?========== INJECT =========
 private produtosService = inject (produtoService);
 public carrinhoFacade = inject (CarrinhoFacade);
+ header = inject (Header);
 
 quantidadeCarrinho = this.carrinhoFacade.quantidadeCarrinho;
 totalCarrinho = this.carrinhoFacade.totalCarrinho;
